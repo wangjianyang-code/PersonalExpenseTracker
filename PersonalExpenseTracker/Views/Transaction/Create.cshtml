@@ -1,0 +1,78 @@
+﻿@model PersonalExpenseTracker.Models.Transaction
+
+@{
+    ViewData["Title"] = "Create Transaction";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3>Create Transaction</h3>
+        </div>
+
+        <div class="card-body">
+            <form asp-controller="Transaction" asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Type" class="form-label"></label>
+                    <select asp-for="Type" class="form-select">
+                        <option value="">Select Type</option>
+                        <option value="Income">Income</option>
+                        <option value="Expense">Expense</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Amount" class="form-label"></label>
+                    <input asp-for="Amount" class="form-control" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Date" class="form-label"></label>
+                    <input asp-for="Date" class="form-control" type="date" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CategoryId" class="form-label">Category</label>
+                    <select asp-for="CategoryId"
+                            asp-items="ViewBag.CategoryList"
+                            class="form-select">
+                        <option value="">Select Category</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Notes" class="form-label"></label>
+                    <textarea asp-for="Notes" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Create
+                </button>
+
+                <a asp-controller="Transaction"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Back to List
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

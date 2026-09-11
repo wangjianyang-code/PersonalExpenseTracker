@@ -1,0 +1,76 @@
+﻿@model IEnumerable<PersonalExpenseTracker.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Transactions</h2>
+
+        <a asp-controller="Transaction"
+           asp-action="Create"
+           class="btn btn-primary">
+            Create New Transaction
+        </a>
+    </div>
+
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["success"]
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th style="width: 260px;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var transaction in Model)
+                    {
+                        <tr>
+                            <td>@transaction.Description</td>
+                            <td>@transaction.Type</td>
+                            <td>@transaction.Amount.ToString("C")</td>
+                            <td>@transaction.Date.ToString("yyyy-MM-dd")</td>
+                            <td>@transaction.Category?.Name</td>
+                            <td>
+                                <a asp-controller="Transaction"
+                                   asp-action="Details"
+                                   asp-route-id="@transaction.Id"
+                                   class="btn btn-info btn-sm">
+                                    Details
+                                </a>
+
+                                <a asp-controller="Transaction"
+                                   asp-action="Edit"
+                                   asp-route-id="@transaction.Id"
+                                   class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
+
+                                <a asp-controller="Transaction"
+                                   asp-action="Delete"
+                                   asp-route-id="@transaction.Id"
+                                   class="btn btn-danger btn-sm">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

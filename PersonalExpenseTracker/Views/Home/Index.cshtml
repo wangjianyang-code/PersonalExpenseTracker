@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>Personal Expense Dashboard</h2>
+        <p class="text-muted">
+            Overview of your income, expenses and current balance.
+        </p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Income</h5>
+                    <h2>@ViewBag.TotalIncome.ToString("C")</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Expense</h5>
+                    <h2>@ViewBag.TotalExpense.ToString("C")</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Balance</h5>
+                    <h2>@ViewBag.Balance.ToString("C")</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-4">
+
+        <a asp-controller="Transaction"
+           asp-action="Index"
+           class="btn btn-primary me-2">
+            View Transactions
+        </a>
+
+        <a asp-controller="Category"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Manage Categories
+        </a>
+
+    </div>
+
+</div>
