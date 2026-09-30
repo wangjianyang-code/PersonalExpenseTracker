@@ -1,0 +1,65 @@
+﻿@model PersonalExpenseTracker.Models.Shipment
+
+@{
+    ViewData["Title"] = "Create Shipment";
+}
+
+<h2>Create Shipment</h2>
+
+<form asp-action="Create" method="post">
+
+    <input asp-for="OrderId"
+           type="hidden" />
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="RecipientName"
+               class="form-label"></label>
+
+        <input asp-for="RecipientName"
+               class="form-control" />
+
+        <span asp-validation-for="RecipientName"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Address"
+               class="form-label"></label>
+
+        <input asp-for="Address"
+               class="form-control" />
+
+        <span asp-validation-for="Address"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TrackingNumber"
+               class="form-label"></label>
+
+        <input asp-for="TrackingNumber"
+               class="form-control" />
+
+        <span asp-validation-for="TrackingNumber"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Save Shipment
+    </button>
+
+    <a asp-controller="Order"
+       asp-action="Details"
+       asp-route-id="@Model.OrderId"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

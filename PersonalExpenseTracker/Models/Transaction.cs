@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonalExpenseTracker.Models
 {
@@ -31,5 +32,11 @@ namespace PersonalExpenseTracker.Models
 
         [StringLength(500)]
         public string? Notes { get; set; }
+
+        [Required]
+        public string ApplicationUserId { get; set; } = string.Empty;
+
+        [ForeignKey("ApplicationUserId")]
+        public ApplicationUser? ApplicationUser { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonalExpenseTracker.Models
 {
@@ -13,6 +14,13 @@ namespace PersonalExpenseTracker.Models
         [StringLength(200)]
         public string? Description { get; set; }
 
-        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+        [Required]
+        public string ApplicationUserId { get; set; } = string.Empty;
+
+        [ForeignKey("ApplicationUserId")]
+        public ApplicationUser? ApplicationUser { get; set; }
+
+        public ICollection<Transaction> Transactions { get; set; }
+            = new List<Transaction>();
     }
 }

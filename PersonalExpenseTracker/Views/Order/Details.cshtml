@@ -1,0 +1,163 @@
+﻿@model PersonalExpenseTracker.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order #@Model.Id</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+
+        <p>
+            <strong>Date:</strong>
+            @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            @Model.Status
+        </p>
+
+        <p>
+            <strong>Total:</strong>
+            @Model.TotalAmount.ToString("C")
+        </p>
+
+        @if (!string.IsNullOrWhiteSpace(Model.PaymentReference))
+        {
+            <p>
+                <strong>Payment Reference:</strong>
+                @Model.PaymentReference
+            </p>
+        }
+
+    </div>
+</div>
+
+<h4>Items</h4>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.Description</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitPrice.ToString("C")</td>
+                <td>
+                    @((item.Quantity * item.UnitPrice).ToString("C"))
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Status != "Paid" &&
+     Model.Status != "Shipped" &&
+     Model.Status != "Delivered")
+{
+    <form action="/api/payment/create-checkout-session/@Model.Id"
+          method="post"
+          class="mb-4">
+
+        @Html.AntiForgeryToken()
+
+        <button type="submit"
+                class="btn btn-success">
+            Pay with Stripe
+        </button>
+    </form>
+}
+else
+{
+    <div class="alert alert-success">
+        Payment completed.
+    </div>
+}
+
+<hr />
+
+@if (Model.Shipment == null)
+{
+    <a asp-controller="Shipment"
+       asp-action="Create"
+       asp-route-orderId="@Model.Id"
+       class="btn btn-primary">
+        Add Shipment
+    </a>
+}
+else
+{
+    <h4>Shipment</h4>
+
+    <p>
+        <strong>Recipient:</strong>
+        @Model.Shipment.RecipientName
+    </p>
+
+    <p>
+        <strong>Address:</strong>
+        @Model.Shipment.Address
+    </p>
+
+    <p>
+        <strong>Tracking Number:</strong>
+        @Model.Shipment.TrackingNumber
+    </p>
+
+    <p>
+        <strong>Status:</strong>
+        @Model.Shipment.Status
+    </p>
+
+    @if (Model.Shipment.Status == "Preparing")
+    {
+        <form asp-controller="Shipment"
+              asp-action="MarkShipped"
+              method="post"
+              class="mb-2">
+
+            <input type="hidden"
+                   name="id"
+                   value="@Model.Shipment.Id" />
+
+            <button type="submit"
+                    class="btn btn-warning">
+                Mark Shipped
+            </button>
+        </form>
+    }
+
+    @if (Model.Shipment.Status == "Shipped")
+    {
+        <form asp-controller="Shipment"
+              asp-action="MarkDelivered"
+              method="post"
+              class="mb-2">
+
+            <input type="hidden"
+                   name="id"
+                   value="@Model.Shipment.Id" />
+
+            <button type="submit"
+                    class="btn btn-success">
+                Mark Delivered
+            </button>
+        </form>
+    }
+}
+
+<a asp-action="Index"
+   class="btn btn-secondary mt-3">
+    Back to Orders
+</a>
